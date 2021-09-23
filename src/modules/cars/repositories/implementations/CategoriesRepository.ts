@@ -22,7 +22,7 @@ class CategoriesRepository implements ICategoriesRepository {
   }
 
   create({ name, description }: ICreateCategoryDTO): void {
-    const category = new Category(name, description);
+    const category = Category.create({ name, description });
     this.categories.push(category);
   }
 

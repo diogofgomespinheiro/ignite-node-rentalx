@@ -22,7 +22,7 @@ class SpecificationsRepository implements ISpecificationsRepository {
   }
 
   create({ description, name }: ICreateSpecificationDTO): void {
-    const specification = new Specification(name, description);
+    const specification = Specification.create({ name, description });
     this.specifications.push(specification);
   }
 

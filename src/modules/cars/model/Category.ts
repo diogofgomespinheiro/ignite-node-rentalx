@@ -1,19 +1,32 @@
 import { nanoid } from 'nanoid';
 
+interface ICategoryProps {
+  id?: string;
+  name: string;
+  description: string;
+  created_at?: Date;
+}
+
 class Category {
   id?: string;
   name: string;
   description: string;
   created_at: Date;
 
-  constructor(name: string, description: string) {
-    if (!this.id) {
-      this.id = nanoid();
-    }
+  constructor(props: Required<ICategoryProps>) {
+    this.id = props.id;
+    this.name = props.name;
+    this.description = props.description;
+    this.created_at = props.created_at;
+  }
 
-    this.name = name;
-    this.description = description;
-    this.created_at = new Date();
+  public static create({
+    id = nanoid(),
+    name,
+    description,
+    created_at = new Date()
+  }: ICategoryProps): Category {
+    return new Category({ id, name, description, created_at });
   }
 }
 
