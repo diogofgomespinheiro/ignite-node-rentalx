@@ -1,8 +1,9 @@
-import { CategoriesRepository } from '../../repositories/implementations/CategoriesRepository';
+import { InMemoryCategoriesRepository } from '@modules/cars/repositories';
+
 import { ImportCategoryController } from './ImportCategoryController';
 import { ImportCategoryUseCase } from './ImportCategoryUseCase';
 
-const categoriesRepository = CategoriesRepository.getInstance();
+const categoriesRepository = InMemoryCategoriesRepository.getInstance();
 const importCategoryUseCase = new ImportCategoryUseCase(categoriesRepository);
 const importCategoryController = new ImportCategoryController(
   importCategoryUseCase

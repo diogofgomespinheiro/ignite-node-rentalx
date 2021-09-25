@@ -1,7 +1,8 @@
 import csvParse from 'csv-parse';
 import fs from 'fs';
 
-import { ICategoriesRepository } from '../../repositories/ICategoriesRepository';
+import { Category } from '@modules/cars/domain/category';
+import { ICategoriesRepository } from '@modules/cars/repositories';
 
 type ImportCategory = {
   name: string;
@@ -35,16 +36,14 @@ class ImportCategoryUseCase {
   async execute(file: Express.Multer.File): Promise<void> {
     const categories = await this.loadCategories(file);
 
-    categories.forEach(category => {
+    categories.forEach(async category => {
       const { name, description } = category;
 
-      const existingCategory = this.categoriesRepository.findByName(name);
+      const existingCategory = await this.categoriesRepository.findByName(name);
 
       if (!existingCategory) {
-        this.categoriesRepository.create({
-          name,
-          description
-        });
+        const category = Category.create({ name, description });
+        this.categoriesRepository.create(category);
       }
     });
   }

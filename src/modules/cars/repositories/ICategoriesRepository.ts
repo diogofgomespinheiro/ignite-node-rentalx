@@ -1,14 +1,9 @@
 import { Category } from '@modules/cars/domain/category';
 
-interface ICreateCategoryDTO {
-  name: string;
-  description: string;
-}
-
 interface ICategoriesRepository {
-  findByName(name: string): Optional<Category>;
-  list(): Category[];
-  create({ name, description }: ICreateCategoryDTO): void;
+  findByName(name: string): Promise<Optional<Category>>;
+  list(): Promise<Category[]>;
+  create(category: Category): Promise<void>;
 }
 
-export { ICreateCategoryDTO, ICategoriesRepository };
+export { ICategoriesRepository };

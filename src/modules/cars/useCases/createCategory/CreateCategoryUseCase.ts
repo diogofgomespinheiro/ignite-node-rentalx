@@ -1,4 +1,5 @@
-import { ICategoriesRepository } from '../../repositories/ICategoriesRepository';
+import { Category } from '@modules/cars/domain/category';
+import { ICategoriesRepository } from '@modules/cars/repositories';
 
 interface IRequest {
   name: string;
@@ -8,14 +9,15 @@ interface IRequest {
 class CreateCategoryUseCase {
   constructor(private categoriesRepository: ICategoriesRepository) {}
 
-  execute({ name, description }: IRequest): void {
-    const existingCategory = this.categoriesRepository.findByName(name);
+  async execute({ name, description }: IRequest): Promise<void> {
+    const existingCategory = await this.categoriesRepository.findByName(name);
 
     if (existingCategory) {
       throw new Error('Category already exists!');
     }
 
-    this.categoriesRepository.create({ name, description });
+    const category = Category.create({ name, description });
+    this.categoriesRepository.create(category);
   }
 }
 

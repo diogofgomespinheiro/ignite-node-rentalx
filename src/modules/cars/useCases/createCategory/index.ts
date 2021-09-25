@@ -1,8 +1,9 @@
-import { CategoriesRepository } from '../../repositories/implementations/CategoriesRepository';
+import { TypeORMCategoriesRepository } from '@modules/cars/repositories';
+
 import { CreateCategoryController } from './CreateCategoryController';
 import { CreateCategoryUseCase } from './CreateCategoryUseCase';
 
-const categoriesRepository = CategoriesRepository.getInstance();
+const categoriesRepository = TypeORMCategoriesRepository.getInstance();
 const createCategoryUseCase = new CreateCategoryUseCase(categoriesRepository);
 const createCategoryController = new CreateCategoryController(
   createCategoryUseCase
