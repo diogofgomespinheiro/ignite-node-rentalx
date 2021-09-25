@@ -1,10 +1,39 @@
-version: 3
+version: '3'
 
 services:
+  postgres:
+    image: postgres
+    container_name: ignite-rentalx-pg
+    restart: always
+    ports:
+      - 5432:5432
+    environment:
+      - POSTGRES_USER=docker
+      - POSTGRES_PASSWORD=ignite
+      - POSTGRES_DB=rentalx
+    volumes:
+      - pgdata:/data/postgres
+    networks:
+      - ignite-rentalx-network
+
   app:
     build: .
-    container_name: ignite-rentalx
+    container_name: ignite-rentalx-app
     ports:
       - 3333:3333
+    depends_on:
+      - postgres
+    entrypoint: dockerize -wait tcp://ignite-rentalx-pg:5432 -timeout 20s docker-entrypoint.sh
+    command: ['npm', 'run', 'dev']
     volumes:
       - .:/usr/app
+    networks:
+      - ignite-rentalx-network
+
+volumes:
+  pgdata:
+    driver: local
+
+networks:
+  ignite-rentalx-network:
+    driver: bridge
