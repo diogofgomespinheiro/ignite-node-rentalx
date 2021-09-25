@@ -13,6 +13,7 @@
     "forceConsistentCasingInFileNames": true,
     "resolveJsonModule": true,
     "strict": true,
+    "strictPropertyInitialization": false,
     "paths": {
       "@core/*": ["core/*"],
       "@modules/*": ["modules/*"],
