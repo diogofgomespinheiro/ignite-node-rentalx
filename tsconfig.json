@@ -12,6 +12,10 @@
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
     "resolveJsonModule": true,
-    "strict": true
+    "strict": true,
+    "paths": {
+      "@modules/*": ["modules/*"],
+      "@infra/*": ["infra/*"]
+    }
   }
 }
