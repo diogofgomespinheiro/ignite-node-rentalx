@@ -8,6 +8,7 @@ module.exports = {
       'module-resolver',
       {
         alias: {
+          '@core': './src/core',
           '@modules': './src/modules',
           '@infra': './src/shared'
         }
