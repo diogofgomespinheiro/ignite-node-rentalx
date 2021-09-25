@@ -1,5 +1,5 @@
 import { IMapper } from '@core/infra';
-import { Category } from '@modules/cars/domain';
+import { Category } from '@modules/cars/domain/category';
 import { ICategoryDTO } from '@modules/cars/dtos';
 
 export class CategoryMapper implements IMapper<Category, ICategoryDTO> {

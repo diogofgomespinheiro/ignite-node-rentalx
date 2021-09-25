@@ -1,4 +1,4 @@
-import { Category } from '@modules/cars/domain';
+import { Category } from '@modules/cars/domain/category';
 
 interface ICreateCategoryDTO {
   name: string;

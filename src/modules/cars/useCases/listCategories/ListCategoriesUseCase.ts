@@ -1,4 +1,4 @@
-import { Category } from '@modules/cars/domain';
+import { Category } from '@modules/cars/domain/category';
 import { ICategoriesRepository } from '@modules/cars/repositories/ICategoriesRepository';
 
 class ListCategoriesUseCase {
