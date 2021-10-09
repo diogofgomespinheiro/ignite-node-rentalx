@@ -1,23 +1,30 @@
+import { IUseCase } from '@core/domain';
+import { left, right } from '@core/logic';
 import { Category } from '@modules/cars/domain/category';
 import { ICategoriesRepository } from '@modules/cars/repositories';
 
-interface IRequest {
-  name: string;
-  description: string;
-}
+import { ICreateCategoryDTO } from './CreateCategoryDTO';
+import { CreateCategoryResponse } from './CreateCategoryResponse';
+import { CategoryAlreadyExistsError } from './errors';
 
-class CreateCategoryUseCase {
+class CreateCategoryUseCase
+  implements IUseCase<ICreateCategoryDTO, CreateCategoryResponse>
+{
   constructor(private categoriesRepository: ICategoriesRepository) {}
 
-  async execute({ name, description }: IRequest): Promise<void> {
+  async execute({
+    name,
+    description
+  }: ICreateCategoryDTO): Promise<CreateCategoryResponse> {
     const existingCategory = await this.categoriesRepository.findByName(name);
 
     if (existingCategory) {
-      throw new Error('Category already exists!');
+      return left(new CategoryAlreadyExistsError(existingCategory.name));
     }
 
     const category = Category.create({ name, description });
     this.categoriesRepository.create(category);
+    return right(null);
   }
 }
 

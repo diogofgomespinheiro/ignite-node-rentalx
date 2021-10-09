@@ -1,6 +1,7 @@
 import { Router } from 'express';
 import multer from 'multer';
 
+import { adaptRoute } from '@core/infra/adapters/ExpressRouteAdapter';
 import {
   makeCreateCategoryController,
   makeImportCategoryController,
@@ -16,9 +17,7 @@ categoriesRoutes.get('/', (request, response) =>
   makeListCategoriesController().handle(request, response)
 );
 
-categoriesRoutes.post('/', (request, response) =>
-  makeCreateCategoryController().handle(request, response)
-);
+categoriesRoutes.post('/', adaptRoute(makeCreateCategoryController()));
 
 categoriesRoutes.post('/import', upload.single('file'), (request, response) =>
   makeImportCategoryController().handle(request, response)

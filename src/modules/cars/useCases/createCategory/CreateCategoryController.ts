@@ -1,16 +1,44 @@
-import { Request, Response } from 'express';
+import { BaseController } from '@core/infra/Controller';
+import { HttpResponse } from '@core/infra/HttpResponse';
 
 import { CreateCategoryUseCase } from './CreateCategoryUseCase';
+import { CategoryAlreadyExistsError } from './errors';
 
-class CreateCategoryController {
-  constructor(private createCategoryUseCase: CreateCategoryUseCase) {}
+type IRequest = {
+  name: string;
+  description: string;
+};
 
-  async handle(request: Request, response: Response): Promise<Response> {
-    const { name, description } = request.body;
+class CreateCategoryController extends BaseController<IRequest> {
+  constructor(private createCategoryUseCase: CreateCategoryUseCase) {
+    super();
+  }
 
-    await this.createCategoryUseCase.execute({ name, description });
+  async executeImpl(request: IRequest): Promise<HttpResponse> {
+    const { name, description } = request;
 
-    return response.status(201).send();
+    try {
+      const result = await this.createCategoryUseCase.execute({
+        name,
+        description
+      });
+
+      if (result.isLeft()) {
+        const error = result.value;
+
+        switch (error.constructor) {
+          case CategoryAlreadyExistsError:
+            return this.conflict(error);
+          default:
+            return this.fail(error);
+        }
+      } else {
+        return this.created();
+      }
+    } catch (err) {
+      console.log(err);
+      return this.fail(err);
+    }
   }
 }
 
