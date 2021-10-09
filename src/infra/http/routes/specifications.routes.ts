@@ -1,6 +1,6 @@
 import { Router } from 'express';
 
-import { adaptRoute } from '@core/infra/adapters/ExpressRouteAdapter';
+import { adaptRoute } from '@core/infra/adapters';
 import { makeCreateSpecificationController } from '@infra/http/factories/controllers';
 
 const specificationsRoutes = Router();

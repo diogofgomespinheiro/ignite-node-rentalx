@@ -1,7 +1,7 @@
 import { Router } from 'express';
 import multer from 'multer';
 
-import { adaptRoute } from '@core/infra/adapters/ExpressRouteAdapter';
+import { adaptRoute } from '@core/infra/adapters';
 import {
   makeCreateCategoryController,
   makeImportCategoryController,

@@ -1,3 +1,3 @@
-export * from './Mapper';
-export * from './HttpResponse';
-export * from './Controller';
+export * from './mapper';
+export * from './http-response';
+export * from './controller';

@@ -1,2 +1,2 @@
-export * from './Either';
-export * from './Result';
+export * from './either';
+export * from './result';

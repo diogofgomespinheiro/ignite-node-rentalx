@@ -1,2 +1,2 @@
-export * from './categoryMapper';
-export * from './specificationMapper';
+export * from './category.mapper';
+export * from './specification.mapper';

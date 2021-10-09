@@ -1,2 +1,2 @@
-export * from './TypeORMCategoriesRepository';
-export * from './TypeORMSpecificationsRepository';
+export * from './typeorm-categories.repository';
+export * from './typeorm-specifications.repository';

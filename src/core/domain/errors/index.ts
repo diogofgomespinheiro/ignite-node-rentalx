@@ -1,2 +1,2 @@
-export * from './DomainError';
-export * from './UseCaseError';
+export * from './domain.error';
+export * from './use-case.error';
