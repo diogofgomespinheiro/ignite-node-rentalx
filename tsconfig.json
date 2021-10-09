@@ -12,8 +12,9 @@
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
     "resolveJsonModule": true,
-    "strict": true,
+    "strict": false,
     "strictPropertyInitialization": false,
+    "sourceMap": true,
     "paths": {
       "@core/*": ["core/*"],
       "@modules/*": ["modules/*"],

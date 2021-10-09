@@ -21,10 +21,11 @@ services:
     container_name: ignite-rentalx-app
     ports:
       - '3333:3333'
+      - '9270:9229'
     depends_on:
       - postgres
     entrypoint: dockerize -wait tcp://ignite-rentalx-pg:5432 -timeout 20s docker-entrypoint.sh
-    command: ['npm', 'run', 'dev']
+    command: ['npm', 'run', 'debug']
     volumes:
       - '.:/usr/app'
     networks:

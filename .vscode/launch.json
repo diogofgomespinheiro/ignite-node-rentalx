@@ -7,9 +7,14 @@
     {
       "type": "node",
       "request": "attach",
-      "name": "Attach Program",
-      "skipFiles": ["<node_internals>/**"],
-      "outFiles": ["${workspaceFolder}/**/*.js"]
+      "name": "Attach to Docker",
+      "port": 9270,
+      "address": "localhost",
+      "localRoot": "${workspaceFolder}",
+      "sourceMapPathOverrides": {
+        "/user/app/*": "${workspaceRoot}/*"
+      },
+      "remoteRoot": "/usr/app"
     }
   ]
 }
