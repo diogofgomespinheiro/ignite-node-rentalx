@@ -1,16 +1,42 @@
-import { Request, Response } from 'express';
+import { BaseController, HttpResponse } from '@core/infra';
 
-import { CrateSpecificationUseCase } from './CreateSpecificationUseCase';
+import { CreateSpecificationUseCase } from './CreateSpecificationUseCase';
+import { SpecificationAlreadyExistsError } from './errors';
 
-class CreateSpecificationController {
-  constructor(private createSpecificationUseCase: CrateSpecificationUseCase) {}
+interface IRequest {
+  name: string;
+  description: string;
+}
 
-  async handle(request: Request, response: Response): Promise<Response> {
-    const { name, description } = request.body;
+class CreateSpecificationController extends BaseController<IRequest> {
+  constructor(private createSpecificationUseCase: CreateSpecificationUseCase) {
+    super();
+  }
 
-    await this.createSpecificationUseCase.execute({ name, description });
+  async executeImpl(request: IRequest): Promise<HttpResponse> {
+    const { name, description } = request;
 
-    return response.status(201).send();
+    try {
+      const result = await this.createSpecificationUseCase.execute({
+        name,
+        description
+      });
+
+      if (result.isLeft()) {
+        const error = result.value;
+
+        switch (error.constructor) {
+          case SpecificationAlreadyExistsError:
+            return this.conflict(error);
+          default:
+            return this.fail(error);
+        }
+      } else {
+        return this.created();
+      }
+    } catch (err) {
+      return this.fail(err);
+    }
   }
 }
 

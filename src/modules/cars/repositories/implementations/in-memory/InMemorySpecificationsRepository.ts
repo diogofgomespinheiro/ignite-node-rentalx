@@ -1,9 +1,6 @@
 import { Specification } from '@modules/cars/domain/specification';
 
-import {
-  ICreateSpecificationDTO,
-  ISpecificationsRepository
-} from '../../ISpecificationsRepository';
+import { ISpecificationsRepository } from '../../ISpecificationsRepository';
 
 class InMemorySpecificationsRepository implements ISpecificationsRepository {
   private specifications: Specification[];
@@ -23,8 +20,7 @@ class InMemorySpecificationsRepository implements ISpecificationsRepository {
     return InMemorySpecificationsRepository.INSTANCE;
   }
 
-  async create({ description, name }: ICreateSpecificationDTO): Promise<void> {
-    const specification = Specification.create({ name, description });
+  async create(specification: Specification): Promise<void> {
     this.specifications.push(specification);
   }
 

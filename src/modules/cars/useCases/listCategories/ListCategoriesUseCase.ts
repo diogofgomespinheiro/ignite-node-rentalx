@@ -1,12 +1,14 @@
-import { Category } from '@modules/cars/domain/category';
+import { right } from '@core/logic';
 import { ICategoriesRepository } from '@modules/cars/repositories/ICategoriesRepository';
+
+import { ListCategoriesResponse } from './ListCategoriesResponse';
 
 class ListCategoriesUseCase {
   constructor(private categoriesRepository: ICategoriesRepository) {}
 
-  async execute(): Promise<Category[]> {
+  async execute(): Promise<ListCategoriesResponse> {
     const categories = await this.categoriesRepository.list();
-    return categories;
+    return right(categories);
   }
 }
 

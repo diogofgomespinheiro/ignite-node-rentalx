@@ -1,19 +1,25 @@
-import { Request, Response } from 'express';
-
+import { BaseController, HttpResponse } from '@core/infra';
 import { CategoryMapper } from '@modules/cars/mappers';
 
 import { ListCategoriesUseCase } from './ListCategoriesUseCase';
 
-class ListCategoriesController {
-  constructor(private listCategoriesUseCase: ListCategoriesUseCase) {}
+class ListCategoriesController extends BaseController {
+  constructor(private listCategoriesUseCase: ListCategoriesUseCase) {
+    super();
+  }
 
-  async handle(request: Request, response: Response): Promise<Response> {
-    const categories = await this.listCategoriesUseCase.execute();
-    const mappedCategories = categories.map(category =>
-      CategoryMapper.toDTO(category)
-    );
+  async executeImpl(): Promise<HttpResponse> {
+    try {
+      const result = await this.listCategoriesUseCase.execute();
 
-    return response.json(mappedCategories);
+      const mappedCategories = result.value.map(category =>
+        CategoryMapper.toDTO(category)
+      );
+
+      return this.ok(mappedCategories);
+    } catch (err) {
+      return this.fail(err);
+    }
   }
 }
 

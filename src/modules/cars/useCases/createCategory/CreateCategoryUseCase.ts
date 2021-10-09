@@ -23,7 +23,7 @@ class CreateCategoryUseCase
     }
 
     const category = Category.create({ name, description });
-    this.categoriesRepository.create(category);
+    await this.categoriesRepository.create(category);
     return right(null);
   }
 }

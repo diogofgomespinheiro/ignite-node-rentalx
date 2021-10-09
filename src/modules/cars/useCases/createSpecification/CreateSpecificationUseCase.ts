@@ -1,23 +1,34 @@
-import { ISpecificationsRepository } from '../../repositories/ISpecificationsRepository';
+import { IUseCase } from '@core/domain';
+import { left, right } from '@core/logic';
+import { Specification } from '@modules/cars/domain/specification';
+import { ISpecificationsRepository } from '@modules/cars/repositories';
 
-interface IRequest {
-  name: string;
-  description: string;
-}
+import { ICreateSpecificationDTO } from './CreateSpecificationDTO';
+import { CreateSpecificationResponse } from './CreateSpecificationResponse';
+import { SpecificationAlreadyExistsError } from './errors';
 
-class CrateSpecificationUseCase {
+class CreateSpecificationUseCase
+  implements IUseCase<ICreateSpecificationDTO, CreateSpecificationResponse>
+{
   constructor(private specificationsRepository: ISpecificationsRepository) {}
 
-  async execute({ name, description }: IRequest): Promise<void> {
+  async execute({
+    name,
+    description
+  }: ICreateSpecificationDTO): Promise<CreateSpecificationResponse> {
     const existingSpecification =
       await this.specificationsRepository.findByName(name);
 
     if (existingSpecification) {
-      throw new Error('Specification already exists!');
+      return left(
+        new SpecificationAlreadyExistsError(existingSpecification.name)
+      );
     }
 
-    this.specificationsRepository.create({ name, description });
+    const specification = Specification.create({ name, description });
+    await this.specificationsRepository.create(specification);
+    return right(null);
   }
 }
 
-export { CrateSpecificationUseCase };
+export { CreateSpecificationUseCase };
