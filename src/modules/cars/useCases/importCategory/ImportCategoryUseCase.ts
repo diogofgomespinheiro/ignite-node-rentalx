@@ -1,8 +1,13 @@
 import csvParse from 'csv-parse';
 import fs from 'fs';
 
+import { left, right } from '@core/logic';
 import { Category } from '@modules/cars/domain/category';
 import { ICategoriesRepository } from '@modules/cars/repositories';
+
+import { FileNotFoundError } from './errors';
+import { IImportCategoryDTO } from './ImportCategoryDTO';
+import { ImportCategoryResponse } from './ImportCategoryResponse';
 
 type ImportCategory = {
   name: string;
@@ -33,7 +38,11 @@ class ImportCategoryUseCase {
     });
   }
 
-  async execute(file: Express.Multer.File): Promise<void> {
+  async execute({ file }: IImportCategoryDTO): Promise<ImportCategoryResponse> {
+    if (!file) {
+      return left(new FileNotFoundError());
+    }
+
     const categories = await this.loadCategories(file);
 
     categories.forEach(async category => {
@@ -46,6 +55,8 @@ class ImportCategoryUseCase {
         this.categoriesRepository.create(category);
       }
     });
+
+    return right(null);
   }
 }
 

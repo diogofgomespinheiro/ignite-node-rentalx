@@ -1,19 +1,38 @@
-import { Request, Response } from 'express';
+import { BaseController, HttpResponse } from '@core/infra';
 
+import { FileNotFoundError } from './errors';
 import { ImportCategoryUseCase } from './ImportCategoryUseCase';
 
-class ImportCategoryController {
-  constructor(private importCategoryUseCase: ImportCategoryUseCase) {}
+interface IRequest {
+  file: Express.Multer.File;
+}
 
-  async handle(request: Request, response: Response): Promise<Response> {
+class ImportCategoryController extends BaseController<IRequest> {
+  constructor(private importCategoryUseCase: ImportCategoryUseCase) {
+    super();
+  }
+
+  async executeImpl(request: IRequest): Promise<HttpResponse> {
     const { file } = request;
 
-    if (!file) {
-      return response.status(404).send();
-    }
+    try {
+      const result = await this.importCategoryUseCase.execute({ file });
 
-    await this.importCategoryUseCase.execute(file);
-    return response.send();
+      if (result.isLeft()) {
+        const error = result.value;
+
+        switch (error.constructor) {
+          case FileNotFoundError:
+            return this.notFound(error);
+          default:
+            return this.fail(error);
+        }
+      } else {
+        return this.ok();
+      }
+    } catch (err) {
+      return this.fail(err);
+    }
   }
 }
 

@@ -7,7 +7,8 @@ export const adaptRoute = (controller: BaseController) => {
     const data = {
       ...request.body,
       ...request.params,
-      ...request.query
+      ...request.query,
+      file: request.file
     };
 
     const httpResponse = await controller.execute(data);

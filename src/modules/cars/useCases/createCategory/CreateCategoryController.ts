@@ -1,13 +1,12 @@
-import { BaseController } from '@core/infra/Controller';
-import { HttpResponse } from '@core/infra/HttpResponse';
+import { BaseController, HttpResponse } from '@core/infra';
 
 import { CreateCategoryUseCase } from './CreateCategoryUseCase';
 import { CategoryAlreadyExistsError } from './errors';
 
-type IRequest = {
+interface IRequest {
   name: string;
   description: string;
-};
+}
 
 class CreateCategoryController extends BaseController<IRequest> {
   constructor(private createCategoryUseCase: CreateCategoryUseCase) {
@@ -36,7 +35,6 @@ class CreateCategoryController extends BaseController<IRequest> {
         return this.created();
       }
     } catch (err) {
-      console.log(err);
       return this.fail(err);
     }
   }
