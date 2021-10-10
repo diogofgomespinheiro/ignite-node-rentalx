@@ -3,6 +3,6 @@ import { createConnection } from '../database';
 
 createConnection()
   .then(async () => {
-    import('./server');
+    import('./app');
   })
   .catch(error => console.log(`Error connection TypeORM: ${error}`));

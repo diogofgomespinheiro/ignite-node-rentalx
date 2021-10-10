@@ -16,6 +16,12 @@ export default {
     name: 'MIT',
     url: 'https://opensource.org/licenses/MIT'
   },
+  servers: [
+    {
+      url: '/api/v1',
+      description: 'Main Server'
+    }
+  ],
   tags: [
     {
       name: 'Category',
