@@ -20,6 +20,10 @@ export default {
     {
       name: 'Category',
       description: 'Categories Management'
+    },
+    {
+      name: 'Specification',
+      description: 'Specifications Management'
     }
   ],
   paths,

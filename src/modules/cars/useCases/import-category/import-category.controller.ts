@@ -28,7 +28,7 @@ class ImportCategoryController extends BaseController<IRequest> {
             return this.fail(error);
         }
       } else {
-        return this.ok();
+        return this.created();
       }
     } catch (err) {
       return this.fail(err);
