@@ -2,10 +2,13 @@ interface IDomainError {
   message: string;
 }
 
-export abstract class DomainError implements IDomainError {
-  public readonly message: string;
-
+export abstract class DomainError extends Error implements IDomainError {
   constructor(message: string) {
-    this.message = message;
+    super(message);
+
+    const actualProto = new.target.prototype;
+    if (Object.setPrototypeOf) {
+      Object.setPrototypeOf(this, actualProto);
+    }
   }
 }
